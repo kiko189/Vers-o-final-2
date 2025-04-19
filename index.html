@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTA Boss Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #b30000;
+      color: white;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding: 50px;
+      gap: 40px;
+    }
+    .box {
+      background-color: #8b0000;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+    }
+    h1, h2 {
+      margin-top: 0;
+      color: #fff;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 15px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #e60000;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    #dashboard {
+      display: none;
+    }
+    .slot {
+      margin-bottom: 10px;
+    }
+    label {
+      font-size: 14px;
+      color: #fff;
+    }
+    #logo {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    #logo img {
+      max-width: 150px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Login -->
+  <div class="box" id="login">
+    <h1>Login</h1>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="checkLogin()">Entrar</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="box" id="dashboard">
+    <div id="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/GTA_Online_Logo.svg/2560px-GTA_Online_Logo.svg.png" alt="GTA Online Logo">
+    </div>
+    <h1>Dashboard</h1>
+    <div id="slots-container"></div>
+    <button onclick="saveBusinesses()">Guardar</button>
+  </div>
+</div>
+
+<script>
+  function checkLogin() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    if (user === "GTABoss" && pass === "1234") {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      createSlots();
+    } else {
+      alert("Credenciais inválidas, seu burro.");
+    }
+  }
+
+  function createSlots() {
+    const container = document.getElementById('slots-container');
+    for (let i = 1; i <= 20; i++) {
+      const div = document.createElement('div');
+      div.className = 'slot';
+      div.innerHTML = `
+        <label for="business${i}">Negócio ${i}:</label>
+        <input type="text" id="business${i}" placeholder="Nome do negócio ${i}">
+      `;
+      container.appendChild(div);
+    }
+  }
+
+  function saveBusinesses() {
+    const data = [];
+    for (let i = 1; i <= 20; i++) {
+      const value = document.getElementById(`business${i}`).value;
+      data.push({ slot: i, name: value });
+    }
+    localStorage.setItem("gta_businesses", JSON.stringify(data));
+    alert("Negócios guardados localmente! Ainda sem cloud, mas já é alguma coisa ó chefe.");
+  }
+</script>
+
+</body>
+</html>
